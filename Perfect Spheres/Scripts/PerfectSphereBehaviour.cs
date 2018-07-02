@@ -92,10 +92,13 @@ public class PerfectSphereBehaviour : MonoBehaviour
 		_meshRenderer.enabled = true;
 		Quaternion rotation = Quaternion.LookRotation(direction, mainCamera.transform.up);
 		rotation = new Quaternion(-rotation.x, -rotation.y, -rotation.z, rotation.w) * transform.rotation;
+		float offsetXY = _radius * Mathf.Cos(alpha) / Mathf.Cos(Mathf.PI / _numVertices);
+		float offsetZ = _radius * Mathf.Sin(alpha);
 		for (int i = 0; i < _numVertices; i++)
 		{
 			float theta = 2 * Mathf.PI * (i + 0.5f) / _numVertices;
-			_vertices[i] = Rotate(_radius / (Mathf.Cos(alpha) * Mathf.Cos(Mathf.PI / _numVertices)) * new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0), rotation);
+			_vertices[i] = offsetXY * new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0) + offsetZ * Vector3.back;
+			_vertices[i] = Rotate(_vertices[i], rotation);
 			_normals[i] = -direction;
 			_tangents[i] = mainCamera.transform.up;
 			_tangents[i].w = 1;
