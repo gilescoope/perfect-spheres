@@ -8,7 +8,7 @@ Rendering spheres traditionally uses a high number of triangles to achieve a smo
 
 ![](https://i.imgur.com/CMgwqRE.png)
 
-!{}(https://i.imgur.com/SdqMc8p.png)
+![](https://i.imgur.com/SdqMc8p.png)
 
 ## Why not use this
 
