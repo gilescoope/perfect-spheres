@@ -8,6 +8,8 @@ Rendering spheres traditionally uses a high number of triangles to achieve a smo
 
 ![](https://i.imgur.com/CMgwqRE.png)
 
+!{}(https://i.imgur.com/SdqMc8p.png)
+
 ## Why not use this
 
 This is only for rendering spheres, so any other shape of mesh won't work with this code. At the moment there is no support for casting or receiving shadows. In some environments there may not be a performance increase, as the gain in mesh complexity may be offset with an increase in shader complexity and fill.
