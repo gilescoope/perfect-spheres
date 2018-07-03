@@ -40,16 +40,18 @@ public class SphereUVNode : CodeFunctionNode {
         return GetType().GetMethod("SphereUV", BindingFlags.Static | BindingFlags.NonPublic);
     }
 
-    static string SphereUV([Slot(0, Binding.None)] Vector3 Position, [Slot(1, Binding.None)] Vector1 TextureOffset, [Slot(2, Binding.None)] out Vector2 UV, [Slot(3, Binding.None)] out Vector1 Alpha)
+    static string SphereUV([Slot(0, Binding.None)] Vector3 Position, [Slot(1, Binding.None)] out Vector2 UV1, [Slot(2, Binding.None)] out Vector2 UV2, [Slot(3, Binding.None)] out Vector1 Alpha)
     {
-        UV = Vector2.zero;
+        UV1 = Vector2.zero;
+        UV2 = Vector2.zero;
         return @"
 {
     float theta = 0.5 + 0.15915494309 * atan2(Position.z, Position.x);
-    theta = fmod(TextureOffset + theta, 1);
-    UV.x = theta - TextureOffset;
-    UV.y = 0.5 + 0.31830988618 * asin(Position.y);
-    Alpha = clamp(2 - 4 * abs(0.5 - theta), 0, 1);
+    UV1.x = theta;
+    UV1.y = 0.5 + 0.31830988618 * asin(Position.y);
+    UV2.x = fmod(theta + 0.5, 1); - 0.5;
+    UV2.y = UV1.y;
+    Alpha = 2 * abs(theta - 0.5);
 }
 ";
     }

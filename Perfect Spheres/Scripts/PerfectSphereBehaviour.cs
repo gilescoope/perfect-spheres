@@ -22,24 +22,15 @@ public class PerfectSphereBehaviour : MonoBehaviour
 		_meshFilter = gameObject.AddComponent<MeshFilter>();
 		_meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
-		Material[] _materials;
 		if (_texture != null)
 		{
-			_materials = new Material[2];
-			for (int i = 0; i < 2; i++)
-			{
-				_materials[i] = new Material(Shader.Find("Sphere Texture"));
-				_materials[i].SetTexture("_Texture", _texture);
-				_materials[i].SetFloat("_TextureOffset", 0.5f*i);
-			}
+			_meshRenderer.material = new Material(Shader.Find("Sphere Texture"));
+			_meshRenderer.material.SetTexture("_Texture", _texture);
 		}
 		else
 		{
-			_materials = new Material[1];
-			_materials[0] = new Material(Shader.Find("Sphere"));
+			_meshRenderer.material = new Material(Shader.Find("Sphere"));
 		}
-
-		_meshRenderer.materials = _materials;
 		
 		_vertices = new Vector3[_numVertices];
 		_normals = new Vector3[_numVertices];
@@ -110,19 +101,16 @@ public class PerfectSphereBehaviour : MonoBehaviour
 		
 		_meshFilter.mesh.RecalculateBounds();
 
-		for (int i = 0; i < (_texture != null ? 2 : 1); i++)
+		_meshRenderer.material.SetFloat("_Radius", _radius);
+		_meshRenderer.material.SetVector("_Position", transform.position);
+		if (_texture != null)
 		{
-			_meshRenderer.materials[i].SetFloat("_Radius", _radius);
-			_meshRenderer.materials[i].SetVector("_Position", transform.position);
-			if (_texture != null)
-			{
-				Quaternion transformRotation = transform.rotation;
-				_meshRenderer.materials[i].SetVector("_Rotation",
-					new Vector4(transformRotation.x, transformRotation.y, transformRotation.z, transformRotation.w));
-			}
-
-			_meshRenderer.materials[i].SetInt("_Orthographic", mainCamera.orthographic ? 1 : 0);
+			Quaternion transformRotation = transform.rotation;
+			_meshRenderer.material.SetVector("_Rotation",
+				new Vector4(transformRotation.x, transformRotation.y, transformRotation.z, transformRotation.w));
 		}
+
+		_meshRenderer.material.SetInt("_Orthographic", mainCamera.orthographic ? 1 : 0);
 	}
 
 	static Vector3 Rotate(Vector3 V, Quaternion Q)
