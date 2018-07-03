@@ -26,7 +26,7 @@ The behaviour script controls the mesh for the sphere, a polygon is created and 
 
 ![](https://media.giphy.com/media/wJiDELd6qOxs5FDSOL/giphy.gif)
 
-Now the behaviour script sends the position, rotation and radius to the shader on the material. Inside the shader the world position of the pixel along with a direction vector (for a perspective camera this is the pixel position minus the camera position, for an orthographic camera it is simply the camera direction) are used to calculate the world space intersection (if there is one), from which a world space normal can be calculated. Now the world space normal is converted to a tangent space normal and then sent to the PBR normal input node. The alpha channel is calculated as 1 if the ray hits the sphere and 0 otherwise, with fwidth used for anti aliasing at the fringes.
+Next the behaviour script sends the position, rotation and radius to the shader on the material. Inside the shader the world position of the pixel along with a direction vector (for a perspective camera this is the pixel position minus the camera position, for an orthographic camera it is simply the camera direction) are used to calculate the world space intersection (if there is one), from which a world space normal can be calculated. AFter this the world space normal is converted to a tangent space normal and then sent to the PBR normal input node. The alpha channel is calculated as 1 if the ray hits the sphere and 0 otherwise, with fwidth used for anti aliasing at the fringes.
 
 For a textured sphere we have to calculate the original position on the sphere from the world position, here we use a quaternion calculation from my library here https://github.com/gilescoope/shader-graph-nodes/tree/master/Nodes/Quaternions. To rotate our world space normal vector to object space. From this we can extract the polar coordinates which map to our UV for the mesh.
 
@@ -34,6 +34,6 @@ Unfortunately doing this naively when using any non point filtering on our mesh 
 
 ![](https://i.imgur.com/sfD8Eb7.png)
 
-My fix for this involves rendering the sphere twice with the seams in different places and blending between them.
+My fix for this involves sampling the texture twice in the shader to give seams in two different places then interpolating between these values to give a smooth result.
 
 ![](https://i.imgur.com/XVtzziU.png)
