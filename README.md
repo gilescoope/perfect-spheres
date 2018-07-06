@@ -1,6 +1,6 @@
 # perfect-spheres
 
-This is a system for rendering spheres cheaply and accurately in Unity.
+This is a system for rendering spheres cheaply and accurately. To be used in Unity 2018.2 with the scriptable render pipeline.
 
 ## Why use this
 
